@@ -3,6 +3,7 @@ Functions and other helpers for `gutenberg2kindle`'s command-line interface.
 """
 
 import argparse
+import socket
 import sys
 from typing import Final, Optional, Union
 
@@ -12,6 +13,8 @@ from gutenberg2kindle.config import (
     set_config,
     setup_settings,
 )
+from gutenberg2kindle.email import send_book
+from gutenberg2kindle.gutenberg import download_book
 
 COMMAND_SEND: Final[str] = "send"
 COMMAND_GET_CONFIG: Final[str] = "get-config"
@@ -45,6 +48,14 @@ def get_parser() -> argparse.ArgumentParser:
             "Command to use. Supported options allow the user to "
             "either set the tool's config options, read the current "
             "config, or send some books using the current config."
+        ),
+    )
+    parser.add_argument(
+        "--book-id",
+        metavar="BOOK_ID",
+        type=int,
+        help=(
+            "ID of the Project Gutenberg book you want to download."
         ),
     )
     parser.add_argument(
@@ -91,7 +102,25 @@ def main() -> None:
     value: Optional[str] = args.value
 
     if command == "send":
-        raise NotImplementedError("`send` not implemented!")
+        book_id: int = args.book_id
+        book = download_book(book_id)
+
+        if book is None:
+            print(f"Book `{book_id}` could not be downloaded!")
+            sys.exit(1)
+
+        print("Sending book...")
+        try:
+            send_book(book_id, book)
+        except socket.error as err:
+            print(
+                "SMTP credentials are invalid! "
+                "Please validate your current config.\n"
+                f"Server error message: {err}"
+            )
+            sys.exit(1)
+
+        print("Book sent!")
 
     elif command == "get-config":
         stored_value = get_config(name)
