@@ -39,7 +39,14 @@ def test_main_config_handlers(
     # get-config with name
     monkeypatch.setattr(cli, "get_config", lambda _: "test-value")
     with patch.object(
-        sys, "argv", ["gutenberg2kindle", "get-config", "--name", "smtp_server"]
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "get-config",
+            "--name",
+            "smtp_server",
+        ],
     ):
         cli.main()
         out, _ = capfd.readouterr()
