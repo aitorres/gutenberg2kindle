@@ -7,10 +7,10 @@ from typing import Final, Optional, Union
 import usersettings
 
 
-SETTINGS_SMTP_SERVER: Final[str] = "SMTP_SERVER"
-SETTINGS_SMTP_PORT: Final[str] = "SMTP_PORT"
-SETTINGS_SENDER_EMAIL: Final[str] = "SENDER_EMAIL"
-SETTINGS_KINDLE_EMAIL: Final[str] = "KINDLE_EMAIL"
+SETTINGS_SMTP_SERVER: Final[str] = "smtp_server"
+SETTINGS_SMTP_PORT: Final[str] = "smtp_port"
+SETTINGS_SENDER_EMAIL: Final[str] = "sender_email"
+SETTINGS_KINDLE_EMAIL: Final[str] = "kindle_email"
 AVAILABLE_SETTINGS: Final[list[str]] = [
     SETTINGS_SMTP_SERVER,
     SETTINGS_SMTP_PORT,
