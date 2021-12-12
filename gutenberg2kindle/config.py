@@ -4,7 +4,7 @@ Auxiliary functions to handle user configuration for `gutenberg2kindle`
 
 from typing import Final, Optional, Union
 
-import usersettings
+import usersettings  # type: ignore
 
 
 SETTINGS_SMTP_SERVER: Final[str] = "smtp_server"

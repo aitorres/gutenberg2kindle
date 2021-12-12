@@ -4,7 +4,7 @@ import random
 from datetime import datetime
 
 import pytest
-import usersettings
+import usersettings  # type: ignore
 
 from gutenberg2kindle import config
 
