@@ -14,7 +14,6 @@ def _generate_new_settings_instance() -> usersettings.Settings:
 
     random_id = int(datetime.now().timestamp()) + random.randint(0, 1000)
     test_app_id = f"test.gutenberg2kindle.test_{random_id}"
-    print("hola ", test_app_id)
     return usersettings.Settings(test_app_id)
 
 
