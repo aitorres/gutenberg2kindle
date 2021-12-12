@@ -27,7 +27,7 @@ def test_download_book(
     monkeypatch.setattr(
         "requests.get",
         lambda _: ResponseMock(
-            "",
+            b"",
             status_code=500
         )
     )
