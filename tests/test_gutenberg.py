@@ -1,8 +1,11 @@
+"""Unit tests for the helper functions that connect to Project Gutenberg"""
+
 from dataclasses import dataclass
 
 import pytest
 
 from gutenberg2kindle import gutenberg
+
 
 @dataclass(frozen=True)
 class ResponseMock:
