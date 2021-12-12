@@ -30,6 +30,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
+usersettings = "^1.1.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
