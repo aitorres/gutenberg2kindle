@@ -112,7 +112,7 @@ def main() -> None:
         print("Sending book...")
         try:
             send_book(book_id, book)
-        except socket.error as err:
+        except socket.error as err:  # pylint: disable=no-member
             print(
                 "SMTP credentials are invalid! "
                 "Please validate your current config.\n"
