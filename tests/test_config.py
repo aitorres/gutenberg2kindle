@@ -58,6 +58,12 @@ def test_set_config(monkeypatch: pytest.MonkeyPatch) -> None:
     ):
         config.set_config("pokemon", 151)
 
+    with pytest.raises(
+        ValueError,
+        match="`pokemon` is not a valid format"
+    ):
+        config.set_config(config.SETTINGS_FORMAT, "pokemon")
+
     config.settings.add_setting(
         config.SETTINGS_SMTP_SERVER, str, ""
     )
