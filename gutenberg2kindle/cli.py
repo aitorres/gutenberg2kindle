@@ -52,6 +52,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--book-id",
+        "-b",
         metavar="BOOK_ID",
         type=int,
         help=(
@@ -60,6 +61,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--name",
+        "-n",
         metavar="NAME",
         type=str,
         choices=AVAILABLE_SETTINGS,
@@ -69,6 +71,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--value",
+        "-a",
         metavar="VALUE",
         type=str,
         help=(

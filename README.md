@@ -40,10 +40,10 @@ You can set a value for any of the settings via:
 gutenberg2kindle set-config --name <key name> --value <key value>
 ```
 
-Finally, once you're done configuring your project, you can send any ebook via its Project Gutenberg book ID:
+Finally, once you're done configuring your project, you can send any ebook via its Project Gutenberg book ID (with flags `-b` or `--book-id`):
 
 ```bash
-gutenberg2kindle send --book-id <book id as an integer, e.g. 1>
+gutenberg2kindle send -b <book id as an integer, e.g. 1>
 ```
 
 Note that, if using Gmail as your SMTP server, you might need to set up an [App Password](https://support.google.com/accounts/answer/185833) to use instead of your regular password.
