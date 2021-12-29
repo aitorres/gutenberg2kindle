@@ -46,6 +46,12 @@ Finally, once you're done configuring your project, you can send any ebook via i
 gutenberg2kindle send -b <book id as an integer, e.g. 1>
 ```
 
+You can send multiple books at the same time in the same run, the `-b` / `--book-id` flag accepts multiple arguments.
+
+```bash
+gutenberg2kindle send -b <first book id> [<second book id> <third book id>...]
+```
+
 Note that, if using Gmail as your SMTP server, you might need to set up an [App Password](https://support.google.com/accounts/answer/185833) to use instead of your regular password.
 
 ## Contributing

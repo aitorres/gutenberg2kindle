@@ -175,7 +175,7 @@ def test_main_send_handler_if_email_cant_be_sent(
         out, _ = capfd.readouterr()
         assert (
             out == (
-                "Sending book...\n"
+                "Sending book `1234`...\n"
                 "SMTP credentials are invalid! "
                 "Please validate your current config.\n"
                 "Server error message: smtp error!\n"
@@ -211,7 +211,34 @@ def test_main_send_handler_if_email_is_sent(
         out, _ = capfd.readouterr()
         assert (
             out == (
-                "Sending book...\n"
-                "Book sent!\n"
+                "Sending book `1234`...\n"
+                "Book `1234` sent!\n"
+            )
+        )
+
+    # multiple books at once
+    with patch.object(
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "send",
+            "--book-id",
+            "1234",
+            "5678",
+            "9876",
+        ]
+    ):
+        cli.main()
+        out, _ = capfd.readouterr()
+        assert (
+            out == (
+                "Sending book `1234`...\n"
+                "Book `1234` sent!\n"
+                "Sending book `5678`...\n"
+                "Book `5678` sent!\n"
+                "Sending book `9876`...\n"
+                "Book `9876` sent!\n"
+                "3 books sent successfully!\n"
             )
         )

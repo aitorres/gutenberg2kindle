@@ -55,8 +55,12 @@ def get_parser() -> argparse.ArgumentParser:
         "-b",
         metavar="BOOK_ID",
         type=int,
+        nargs='+',
+        default=[],
         help=(
-            "ID of the Project Gutenberg book you want to download."
+            "ID of the Project Gutenberg book you want to download. "
+            "Can be specified multiple times to download more than one "
+            "book at the same time."
         ),
     )
     parser.add_argument(
@@ -105,25 +109,31 @@ def main() -> None:
     value: Optional[str] = args.value
 
     if command == "send":
-        book_id: int = args.book_id
-        book = download_book(book_id)
+        book_id_list: list[int] = args.book_id
+        books_amount = len(book_id_list)
 
-        if book is None:
-            print(f"Book `{book_id}` could not be downloaded!")
-            sys.exit(1)
+        for book_id in book_id_list:
+            book = download_book(book_id)
 
-        print("Sending book...")
-        try:
-            send_book(book_id, book)
-        except socket.error as err:  # pylint: disable=no-member
-            print(
-                "SMTP credentials are invalid! "
-                "Please validate your current config.\n"
-                f"Server error message: {err}"
-            )
-            sys.exit(1)
+            if book is None:
+                print(f"Book `{book_id}` could not be downloaded!")
+                sys.exit(1)
 
-        print("Book sent!")
+            print(f"Sending book `{book_id}`...")
+            try:
+                send_book(book_id, book)
+            except socket.error as err:  # pylint: disable=no-member
+                print(
+                    "SMTP credentials are invalid! "
+                    "Please validate your current config.\n"
+                    f"Server error message: {err}"
+                )
+                sys.exit(1)
+
+            print(f"Book `{book_id}` sent!")
+
+        if books_amount > 1:
+            print(f"{books_amount} books sent successfully!")
 
     elif command == "get-config":
         stored_value = get_config(name)
