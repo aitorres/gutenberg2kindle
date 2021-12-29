@@ -111,3 +111,8 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
     book_response_3 = gutenberg.download_book(book_id)
     assert book_response_3 is not None
     assert book_response_3.read() == b"book content"
+
+    # invalid format
+    monkeypatch.setattr(gutenberg, "get_config", lambda _: "INVALID_FORMAT")
+    with pytest.raises(ValueError, match="INVALID_FORMAT is an invalid format"):
+        gutenberg.download_book(book_id)
