@@ -114,5 +114,7 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
 
     # invalid format
     monkeypatch.setattr(gutenberg, "get_config", lambda _: "INVALID_FORMAT")
-    with pytest.raises(ValueError, match="INVALID_FORMAT is an invalid format"):
+    with pytest.raises(
+        ValueError, match="INVALID_FORMAT is an invalid format"
+    ):
         gutenberg.download_book(book_id)
