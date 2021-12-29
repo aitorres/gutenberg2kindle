@@ -3,6 +3,7 @@ Functions and other helpers for `gutenberg2kindle`'s command-line interface.
 """
 
 import argparse
+import getpass
 import socket
 import sys
 from typing import Final, Optional, Union
@@ -112,6 +113,9 @@ def main() -> None:
         book_id_list: list[int] = args.book_id
         books_amount = len(book_id_list)
 
+        # request password
+        password = getpass.getpass("Please enter your SMTP password: ")
+
         for book_id in book_id_list:
             book = download_book(book_id)
 
@@ -121,7 +125,7 @@ def main() -> None:
 
             print(f"Sending book `{book_id}`...")
             try:
-                send_book(book_id, book)
+                send_book(book_id, book, password)
             except socket.error as err:  # pylint: disable=no-member
                 print(
                     "SMTP credentials are invalid! "

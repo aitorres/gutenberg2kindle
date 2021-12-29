@@ -2,7 +2,6 @@
 
 import smtplib
 import ssl
-import getpass
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -39,6 +38,7 @@ def create_base_email(
 def send_book(
     book_id: int,
     book_in_memory: BytesIO,
+    password: str,
 ) -> None:
     """
     Given a book as a file in memory, sends the file via email
@@ -70,9 +70,6 @@ def send_book(
         f"attachment; filename={book_id}.mobi",
     )
     message.attach(part)
-
-    # request password
-    password = getpass.getpass("Please enter your password: ")
 
     # send email
     text = message.as_string()

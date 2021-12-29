@@ -10,6 +10,11 @@ import pytest
 from gutenberg2kindle import cli
 
 
+def _getpass_mock(message: str) -> str:
+    print(message)
+    return "m0ck-p4ssw0rd"
+
+
 def test_get_parser() -> None:
     """
     Unit tests for the function that returns a parser for
@@ -125,41 +130,8 @@ def test_main_send_handler_if_book_is_none(
     """
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
     monkeypatch.setattr(cli, "download_book", lambda _: None)
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
 
-    with patch.object(
-        sys,
-        "argv",
-        [
-            "gutenberg2kindle",
-            "send",
-            "--book-id",
-            "1234",
-        ]
-    ):
-        with pytest.raises(SystemExit, match="1"):
-            cli.main()
-        out, _ = capfd.readouterr()
-        assert (
-            out == "Book `1234` could not be downloaded!\n"
-        )
-
-
-def test_main_send_handler_if_email_cant_be_sent(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
-) -> None:
-    """
-    Unit tests for the `send` handler of the CLI when the email can't be sent
-    """
-    monkeypatch.setattr(cli, "setup_settings", lambda: None)
-    monkeypatch.setattr(
-        cli, "download_book", lambda _: BytesIO(b"book content")
-    )
-
-    def _send_book_monkeypatch(book_id: int, book: BytesIO) -> None:
-        raise socket.error("smtp error!")
-
-    monkeypatch.setattr(cli, "send_book", _send_book_monkeypatch)
     with patch.object(
         sys,
         "argv",
@@ -175,6 +147,47 @@ def test_main_send_handler_if_email_cant_be_sent(
         out, _ = capfd.readouterr()
         assert (
             out == (
+                "Please enter your SMTP password: \n"
+                "Book `1234` could not be downloaded!\n"
+            )
+        )
+
+
+def test_main_send_handler_if_email_cant_be_sent(
+    monkeypatch: pytest.MonkeyPatch,
+    capfd: pytest.CaptureFixture,
+) -> None:
+    """
+    Unit tests for the `send` handler of the CLI when the email can't be sent
+    """
+    monkeypatch.setattr(cli, "setup_settings", lambda: None)
+    monkeypatch.setattr(
+        cli, "download_book", lambda _: BytesIO(b"book content")
+    )
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
+
+    def _send_book_monkeypatch(
+        book_id: int, book: BytesIO, password: str
+    ) -> None:
+        raise socket.error("smtp error!")
+    monkeypatch.setattr(cli, "send_book", _send_book_monkeypatch)
+
+    with patch.object(
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "send",
+            "--book-id",
+            "1234",
+        ]
+    ):
+        with pytest.raises(SystemExit, match="1"):
+            cli.main()
+        out, _ = capfd.readouterr()
+        assert (
+            out == (
+                "Please enter your SMTP password: \n"
                 "Sending book `1234`...\n"
                 "SMTP credentials are invalid! "
                 "Please validate your current config.\n"
@@ -195,6 +208,7 @@ def test_main_send_handler_if_email_is_sent(
     monkeypatch.setattr(
         cli, "download_book", lambda _: BytesIO(b"book content")
     )
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
 
     monkeypatch.setattr(cli, "send_book", lambda *_: None)
     with patch.object(
@@ -211,6 +225,7 @@ def test_main_send_handler_if_email_is_sent(
         out, _ = capfd.readouterr()
         assert (
             out == (
+                "Please enter your SMTP password: \n"
                 "Sending book `1234`...\n"
                 "Book `1234` sent!\n"
             )
@@ -233,6 +248,7 @@ def test_main_send_handler_if_email_is_sent(
         out, _ = capfd.readouterr()
         assert (
             out == (
+                "Please enter your SMTP password: \n"
                 "Sending book `1234`...\n"
                 "Book `1234` sent!\n"
                 "Sending book `5678`...\n"
