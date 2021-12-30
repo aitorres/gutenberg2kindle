@@ -126,6 +126,7 @@ def main() -> None:
             print(f"Sending book `{book_id}`...")
             try:
                 send_book(book_id, book, password)
+                book.close()
             except socket.error as err:  # pylint: disable=no-member
                 print(
                     "SMTP credentials are invalid! "
@@ -133,7 +134,6 @@ def main() -> None:
                     f"Server error message: {err}"
                 )
                 sys.exit(1)
-
             print(f"Book `{book_id}` sent!")
 
         if books_amount > 1:
