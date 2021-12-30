@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1] - 2021-12-30
+
+### Fixed
+
+- Solve a possible memory leak when sending multiple books by manually closing each book's buffer after an email has been sent.
+
 ## [0.2.0] - 2021-12-29
 
 ### Added
