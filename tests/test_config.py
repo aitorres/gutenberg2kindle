@@ -2,6 +2,8 @@
 
 import random
 from datetime import datetime
+from io import StringIO
+from typing import Union
 
 import pytest
 import usersettings  # type: ignore
@@ -85,3 +87,35 @@ def test_setup_settings(monkeypatch: pytest.MonkeyPatch) -> None:
 
     for setting in config.AVAILABLE_SETTINGS:
         assert setting in config.settings
+
+
+def test_interactive_config(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Unit tests for the interactive config funcionality"""
+    monkeypatch.setattr(config, "settings", _generate_new_settings_instance())
+    config.setup_settings()
+    default_settings: dict[str, Union[str, int]] = config.settings.copy()
+
+    # all blank
+    monkeypatch.setattr("sys.stdin", StringIO("\n\n\n\n\n"))
+    config.interactive_config()
+    new_settings_1 = config.get_config()
+    assert default_settings == new_settings_1
+
+    # changing values
+    monkeypatch.setattr(
+        "sys.stdin",
+        StringIO(
+            "localhost\n8080\nexample@example.org\n"
+            "kindle@example.org\nno_images\n"
+            )
+        )
+    config.interactive_config()
+    new_settings_2 = config.get_config()
+    assert default_settings != new_settings_2
+    assert new_settings_2 == {
+        "smtp_server": "localhost",
+        "smtp_port": 8080,
+        "sender_email": "example@example.org",
+        "kindle_email": "kindle@example.org",
+        "format": "no_images",
+    }
