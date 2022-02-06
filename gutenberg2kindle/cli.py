@@ -109,7 +109,7 @@ def main() -> None:
     name: Optional[str] = args.name
     value: Optional[str] = args.value
 
-    if command == "send":
+    if command == COMMAND_SEND:
         book_id_list: list[int] = args.book_id
         books_amount = len(book_id_list)
 
@@ -139,7 +139,7 @@ def main() -> None:
         if books_amount > 1:
             print(f"{books_amount} books sent successfully!")
 
-    elif command == "get-config":
+    elif command == COMMAND_GET_CONFIG:
         stored_value = get_config(name)
 
         if isinstance(stored_value, dict):
@@ -148,7 +148,7 @@ def main() -> None:
         else:
             print(stored_value)
 
-    elif command == "set-config":
+    elif command == COMMAND_SET_CONFIG:
         if name is None:
             print("Please specify a setting name with the `--name` flag")
             sys.exit(1)
