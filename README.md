@@ -40,6 +40,12 @@ You can set a value for any of the settings via:
 gutenberg2kindle set-config --name <key name> --value <key value>
 ```
 
+Or you can do it all at once interactively, being able to check (and modify, if needed) the current config, just by running:
+
+```bash
+gutenberg2kindle interactive-config
+```
+
 Finally, once you're done configuring your project, you can send any ebook via its Project Gutenberg book ID (with flags `-b` or `--book-id`):
 
 ```bash
