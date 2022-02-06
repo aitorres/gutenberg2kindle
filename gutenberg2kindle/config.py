@@ -46,7 +46,7 @@ def setup_settings() -> usersettings.Settings:
     settings.load_settings()
 
 
-def get_config(name: Optional[str] = None) -> Optional[Union[dict, int, str]]:
+def get_config(name: Optional[str] = None) -> Union[dict, int, str]:
     """
     Given a setting name, returns the value for said setting.
 

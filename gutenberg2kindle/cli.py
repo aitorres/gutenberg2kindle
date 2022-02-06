@@ -95,6 +95,22 @@ def format_setting(name: str, value: Union[str, int]) -> str:
     return f"{name}:\t\t{value}"
 
 
+def print_settings(
+    setting_or_dict: Union[str, int, dict[str, Union[str, int]]]
+) -> None:
+    """
+    Auxiliary function that prints the current settings, passed as a
+    dictionary, or defaults to printing the received value if it's
+    a string or an int
+    """
+
+    if isinstance(setting_or_dict, dict):
+        for setting_name, setting_value in setting_or_dict.items():
+            print(format_setting(setting_name, setting_value))
+    else:
+        print(setting_or_dict)
+
+
 def main() -> None:
     """
     Run the tool's CLI
@@ -144,12 +160,7 @@ def main() -> None:
 
     elif command == COMMAND_GET_CONFIG:
         stored_value = get_config(name)
-
-        if isinstance(stored_value, dict):
-            for setting_name, setting_value in stored_value.items():
-                print(format_setting(setting_name, setting_value))
-        else:
-            print(stored_value)
+        print_settings(stored_value)
 
     elif command == COMMAND_SET_CONFIG:
         if name is None:
