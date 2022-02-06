@@ -6,6 +6,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.2] - 2022-02-06
+
+### Added
+
+- You can config the tool interactively with the new `interactive-config` command
+
+### Changed
+
+- Small type hint changes and general refactoring
+- Dependency upgrades
+
 ## [0.2.1] - 2021-12-30
 
 ### Fixed
