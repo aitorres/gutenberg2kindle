@@ -33,15 +33,15 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 usersettings = "^1.1.5"
-requests = "^2.26.0"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "^7.0.0"
 pytest-cov = "^3.0.0"
 flake8 = "^4.0.1"
-mypy = "^0.910"
+mypy = "^0.931"
 pylint = "^2.12.2"
-types-requests = "^2.26.1"
+types-requests = "^2.27.8"
 
 [tool.poetry.scripts]
 gutenberg2kindle = "gutenberg2kindle.cli:main"
