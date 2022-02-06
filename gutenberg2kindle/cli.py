@@ -11,6 +11,7 @@ from typing import Final, Optional, Union
 from gutenberg2kindle.config import (
     AVAILABLE_SETTINGS,
     get_config,
+    interactive_config,
     set_config,
     setup_settings,
 )
@@ -20,10 +21,12 @@ from gutenberg2kindle.gutenberg import download_book
 COMMAND_SEND: Final[str] = "send"
 COMMAND_GET_CONFIG: Final[str] = "get-config"
 COMMAND_SET_CONFIG: Final[str] = "set-config"
+COMMAND_INTERACTIVE_CONFIG: Final[str] = "interactive-config"
 AVAILABLE_COMMANDS: Final[list[str]] = [
     COMMAND_SEND,
     COMMAND_GET_CONFIG,
     COMMAND_SET_CONFIG,
+    COMMAND_INTERACTIVE_CONFIG,
 ]
 
 
@@ -159,6 +162,9 @@ def main() -> None:
 
         set_config(name, value)
         print(format_setting(name, value))
+
+    elif command == COMMAND_INTERACTIVE_CONFIG:
+        interactive_config()
 
 
 if __name__ == "__main__":

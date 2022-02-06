@@ -79,3 +79,28 @@ def set_config(name: str, value: Union[int, str]) -> None:
 
     settings[name] = value
     settings.save_settings()
+
+
+def interactive_config() -> None:
+    """
+    Interactively attempts to fill-in the config values, one by one.
+    Faster than using `set_config` once per every config value.
+    """
+
+    for setting_name in AVAILABLE_SETTINGS:
+        current_value = get_config(setting_name)
+        print(f"(*) `{setting_name}`: {current_value}")
+        possible_new_value = input(
+            "Enter a new value, or leave blank to keep the current one: "
+        )
+
+        if possible_new_value:
+            set_config(setting_name, possible_new_value)
+            print(f"Value for `{setting_name}` set to `{possible_new_value}`")
+        else:
+            print(
+                f"Keeping current value of `{current_value}`"
+                f"for `{setting_name}`"
+            )
+
+    print("Config updated successfully!")
