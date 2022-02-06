@@ -95,7 +95,11 @@ def interactive_config() -> None:
         )
 
         if possible_new_value:
-            set_config(setting_name, possible_new_value)
+            if setting_name == SETTINGS_SMTP_PORT:
+                set_config(setting_name, int(possible_new_value))
+            else:
+                set_config(setting_name, possible_new_value)
+
             print(f"Value for `{setting_name}` set to `{possible_new_value}`")
         else:
             print(
