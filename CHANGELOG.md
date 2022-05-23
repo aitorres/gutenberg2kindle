@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.0] - 2022-05-23
+
+### Changed
+
+- The tool will now download ebooks in the `EPUB` format, instead of the `MOBI` format, since `MOBI` will be deprecated from the Send 2 Kindle function in late 2022. Read [this](https://www.amazon.com/sendtokindle/email) and [this](https://www.amazon.com/gp/help/customer/display.html?nodeId=G5WYD9SAF7PGXRNA) for more context.
+- Dependency updates
+
 ## [0.2.2] - 2022-02-06
 
 ### Added
