@@ -36,12 +36,12 @@ usersettings = "^1.1.5"
 requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.0.0"
+pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 flake8 = "^4.0.1"
-mypy = "^0.931"
-pylint = "^2.12.2"
-types-requests = "^2.27.8"
+mypy = "^0.950"
+pylint = "^2.13.9"
+types-requests = "^2.27.27"
 
 [tool.poetry.scripts]
 gutenberg2kindle = "gutenberg2kindle.cli:main"
