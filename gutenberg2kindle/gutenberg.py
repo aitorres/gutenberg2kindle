@@ -14,10 +14,10 @@ from gutenberg2kindle.config import (
 )
 
 GUTENBERG_BOOK_WITH_IMAGES_BASE_URL: Final[str] = (
-    "https://www.gutenberg.org/ebooks/{book_id}.kindle.images"
+    "https://www.gutenberg.org/ebooks/{book_id}.epub.images"
 )
 GUTENBERG_BOOK_BASE_URL: Final[str] = (
-    "https://www.gutenberg.org/ebooks/{book_id}.kindle"
+    "https://www.gutenberg.org/ebooks/{book_id}.epub"
 )
 
 

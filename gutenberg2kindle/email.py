@@ -67,7 +67,7 @@ def send_book(
     encoders.encode_base64(part)
     part.add_header(
         "Content-Disposition",
-        f"attachment; filename={book_id}.mobi",
+        f"attachment; filename={book_id}.epub",
     )
     message.attach(part)
 

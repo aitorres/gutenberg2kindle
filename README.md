@@ -4,7 +4,7 @@ A small Python tool to download and send ebooks from Project Gutenberg to a Kind
 
 ## What's this?
 
-`gutenberg2kindle` is a small command-line interface tool that aims to automatically download a `.mobi` book from [Project Gutenberg](https://www.gutenberg.org/)'s library of free books in the public domain, and then send the ebook's file to a Kindle email address (although, generally, it can be sent to any email address), with just one command.
+`gutenberg2kindle` is a small command-line interface tool that aims to automatically download an `.epub` book from [Project Gutenberg](https://www.gutenberg.org/)'s library of free books in the public domain, and then send the ebook's file to a Kindle email address (although, generally, it can be sent to any email address), with just one command.
 
 The book is sent through a SMTP server with TLS, requiring the user to configure the server settings beforehand via tool commands.
 
