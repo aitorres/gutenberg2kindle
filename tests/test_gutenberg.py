@@ -31,7 +31,7 @@ def test_fetch_book_from_url(monkeypatch: pytest.MonkeyPatch) -> None:
     # error
     monkeypatch.setattr(
         "requests.get",
-        lambda _: ResponseMock(
+        lambda *_args, **_kwargs: ResponseMock(
             b"",
             status_code=500
         )
@@ -44,7 +44,7 @@ def test_fetch_book_from_url(monkeypatch: pytest.MonkeyPatch) -> None:
     # success
     monkeypatch.setattr(
         "requests.get",
-        lambda _: ResponseMock(
+        lambda *_args, **_kwargs: ResponseMock(
             b"book content",
             status_code=200
         )
@@ -65,7 +65,7 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr(
         "requests.get",
-        lambda url: ResponseMock(
+        lambda url, *_args, **_kwargs: ResponseMock(
             (
                 b"image book content"
                 if ".images" in url
@@ -97,7 +97,7 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
     # auto, image not available
     monkeypatch.setattr(
         "requests.get",
-        lambda url: ResponseMock(
+        lambda url, *_args, **_kwargs: ResponseMock(
             (
                 b"image book content"
                 if ".images" in url
