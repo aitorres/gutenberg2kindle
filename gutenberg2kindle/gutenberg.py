@@ -20,6 +20,8 @@ GUTENBERG_BOOK_BASE_URL: Final[str] = (
     "https://www.gutenberg.org/ebooks/{book_id}.epub"
 )
 
+REQUESTS_TIMEOUT: Final[int] = 10
+
 
 def download_book(book_id: int) -> Optional[BytesIO]:
     """
@@ -59,7 +61,7 @@ def fetch_book_from_url(book_url: str) -> Optional[BytesIO]:
     instance
     """
 
-    response = requests.get(book_url)
+    response = requests.get(book_url, timeout=REQUESTS_TIMEOUT)
     if response.status_code != 200:
         return None
     book_content = response.content
