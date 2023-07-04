@@ -6,6 +6,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.0] - 2023-07-03
+
+### Added
+
+- New command (`version`) to get the currently installed version of the tool
+
+### Fixed
+
+- Fix a flaky test on the config module
+
+### Changed
+
+- Dependency updates
+- Small tweaks on CLI help texts
+- Github Actions workflow now ensures there's at least 80% of test coverage
+
 ## [0.4.0] - 2022-05-23
 
 ### Changed

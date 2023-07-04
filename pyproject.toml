@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gutenberg2kindle"
-version = "0.4.0"
+version = "0.5.0"
 description = "A small Python tool to download and send ebooks from Project Gutenberg to a Kindle email address via SMTP"
 authors = ["Andrés Ignacio Torres <dev@aitorres.com>"]
 license = "AGPL-3.0-only"
