@@ -34,6 +34,15 @@ def test_format_setting() -> None:
     assert cli.format_setting("smtp_port", "123") == "smtp_port:\t\t123"
 
 
+def test_version_handler(capfd: pytest.CaptureFixture) -> None:
+    """Unit tests for the version handler of the CLI"""
+
+    with patch.object(sys, "argv", ["gutenberg2kindle", "version"]):
+        cli.main()
+        out, _ = capfd.readouterr()
+        assert out == f"gutenberg2kindle version {cli.__version__}\n"
+
+
 def test_main_config_handlers(
     monkeypatch: pytest.MonkeyPatch,
     capfd: pytest.CaptureFixture,

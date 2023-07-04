@@ -8,6 +8,7 @@ import socket
 import sys
 from typing import Final, Optional, Union
 
+from gutenberg2kindle import __version__
 from gutenberg2kindle.config import (
     AVAILABLE_SETTINGS,
     get_config,
@@ -22,11 +23,13 @@ COMMAND_SEND: Final[str] = "send"
 COMMAND_GET_CONFIG: Final[str] = "get-config"
 COMMAND_SET_CONFIG: Final[str] = "set-config"
 COMMAND_INTERACTIVE_CONFIG: Final[str] = "interactive-config"
+COMMAND_VERSION: Final[str] = "version"
 AVAILABLE_COMMANDS: Final[list[str]] = [
     COMMAND_SEND,
     COMMAND_GET_CONFIG,
     COMMAND_SET_CONFIG,
     COMMAND_INTERACTIVE_CONFIG,
+    COMMAND_VERSION,
 ]
 
 
@@ -176,6 +179,9 @@ def main() -> None:
 
     elif command == COMMAND_INTERACTIVE_CONFIG:
         interactive_config()
+
+    elif command == COMMAND_VERSION:
+        print(f"gutenberg2kindle version {__version__}")
 
 
 if __name__ == "__main__":
