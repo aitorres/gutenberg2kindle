@@ -47,6 +47,9 @@ def test_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
     assert config.get_config() == {
         config.SETTINGS_SMTP_PORT: test_setting_value_1,
         config.SETTINGS_SMTP_SERVER: test_setting_value_2,
+        config.SETTINGS_SENDER_EMAIL: "",
+        config.SETTINGS_KINDLE_EMAIL: "",
+        config.SETTINGS_FORMAT: config.FORMAT_AUTO,
     }
 
 
