@@ -54,7 +54,8 @@ def get_parser() -> argparse.ArgumentParser:
         help=(
             "Command to use. Supported options allow the user to "
             "either set the tool's config options, read the current "
-            "config, or send some books using the current config."
+            "config, or send some books using the current config. "
+            f"Supported values are {', '.join(AVAILABLE_COMMANDS)}."
         ),
     )
     parser.add_argument(
