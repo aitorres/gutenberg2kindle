@@ -156,6 +156,7 @@ def main() -> None:
 
             if book is None:
                 print(f"Book `{book_id}` could not be downloaded!")
+                books_amount -= 1
 
                 if ignore_errors:
                     print(f"Skipping book `{book_id}`...")
