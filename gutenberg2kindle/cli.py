@@ -90,6 +90,17 @@ def get_parser() -> argparse.ArgumentParser:
             "Value to set for the specified setting name, if required."
         ),
     )
+    parser.add_argument(
+        "--ignore-errors",
+        "-i",
+        action="store_true",
+        help=(
+            "If set, the tool will ignore any errors that occur while downloading "
+            "books, useful when attempting to download and send multiple books "
+            "at once. Default is false."
+        )
+    )
+    parser.set_defaults(ignore_errors=False)
 
     return parser
 
@@ -131,6 +142,7 @@ def main() -> None:
     command: str = args.command
     name: Optional[str] = args.name
     value: Optional[str] = args.value
+    ignore_errors: bool = args.ignore_errors
 
     if command == COMMAND_SEND:
         book_id_list: list[int] = args.book_id
@@ -144,7 +156,12 @@ def main() -> None:
 
             if book is None:
                 print(f"Book `{book_id}` could not be downloaded!")
-                sys.exit(1)
+
+                if ignore_errors:
+                    print(f"Skipping book `{book_id}`...")
+                    continue
+                else:
+                    sys.exit(1)
 
             print(f"Sending book `{book_id}`...")
             try:
