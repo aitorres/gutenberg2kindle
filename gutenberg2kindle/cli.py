@@ -95,9 +95,9 @@ def get_parser() -> argparse.ArgumentParser:
         "-i",
         action="store_true",
         help=(
-            "If set, the tool will ignore any errors that occur while downloading "
-            "books, useful when attempting to download and send multiple books "
-            "at once. Default is false."
+            "If set, the tool will ignore any errors that occur while "
+            "downloading books, useful when attempting to download and send "
+            "multiple books at once. Default is false."
         )
     )
     parser.set_defaults(ignore_errors=False)
@@ -161,8 +161,7 @@ def main() -> None:
                 if ignore_errors:
                     print(f"Skipping book `{book_id}`...")
                     continue
-                else:
-                    sys.exit(1)
+                sys.exit(1)
 
             print(f"Sending book `{book_id}`...")
             try:
