@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.6.0] - 2023-07-19
+
+### Added
+
+- New flag (`-i` / `--ignore-errors`) to skip any books the tool is unable to download, useful when bulk downloading books.
+
 ## [0.5.0] - 2023-07-03
 
 ### Added
