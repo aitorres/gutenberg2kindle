@@ -4,6 +4,7 @@ import socket
 import sys
 from io import BytesIO
 from unittest.mock import patch
+from typing import Optional
 
 import pytest
 
@@ -158,6 +159,132 @@ def test_main_send_handler_if_book_is_none(
             out == (
                 "Please enter your SMTP password: \n"
                 "Book `1234` could not be downloaded!\n"
+            )
+        )
+
+
+def test_main_send_handler_if_book_is_none_with_ignore_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    capfd: pytest.CaptureFixture,
+) -> None:
+    """
+    Unit tests for the `send` handler of the CLI when a book can't be found
+    but the user requests to ignore errors
+    """
+    monkeypatch.setattr(cli, "setup_settings", lambda: None)
+    monkeypatch.setattr(cli, "download_book", lambda _: None)
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
+
+    with patch.object(
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "send",
+            "--ignore-errors",
+            "--book-id",
+            "1234",
+        ]
+    ):
+        cli.main()
+        out, _ = capfd.readouterr()
+        assert (
+            out == (
+                "Please enter your SMTP password: \n"
+                "Book `1234` could not be downloaded!\n"
+                "Skipping book `1234`...\n"
+            )
+        )
+
+
+def test_main_send_handler_if_book_is_none_multiple_books(
+    monkeypatch: pytest.MonkeyPatch,
+    capfd: pytest.CaptureFixture,
+) -> None:
+    """
+    Unit tests for the `send` handler of the CLI when a book can't be found
+    and multiple books were requested
+    """
+
+    def _download_book(book_id: int) -> Optional[BytesIO]:
+        if book_id == 5678:
+            return None
+        return BytesIO(b"test")
+
+    monkeypatch.setattr(cli, "setup_settings", lambda: None)
+    monkeypatch.setattr(cli, "download_book", _download_book)
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
+    monkeypatch.setattr(cli, "send_book", lambda *_: None)
+
+    with patch.object(
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "send",
+            "--book-id",
+            "1234",
+            "5678",
+            "9101"
+        ]
+    ):
+        with pytest.raises(SystemExit, match="1"):
+            cli.main()
+        out, _ = capfd.readouterr()
+        assert (
+            out == (
+                "Please enter your SMTP password: \n"
+                "Sending book `1234`...\n"
+                "Book `1234` sent!\n"
+                "Book `5678` could not be downloaded!\n"
+            )
+        )
+
+
+def test_main_send_handler_if_book_is_none_multiple_books_with_ignore_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    capfd: pytest.CaptureFixture,
+) -> None:
+    """
+    Unit tests for the `send` handler of the CLI when a book can't be found
+    and multiple books were requested when the user asks to ignore errors
+    """
+
+    def _download_book(book_id: int) -> Optional[BytesIO]:
+        if book_id == 5678:
+            return None
+        return BytesIO(b"test")
+
+    monkeypatch.setattr(cli, "setup_settings", lambda: None)
+    monkeypatch.setattr(cli, "download_book", _download_book)
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
+    monkeypatch.setattr(cli, "send_book", lambda *_: None)
+
+    with patch.object(
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "send",
+            "--ignore-errors",
+            "--book-id",
+            "1234",
+            "5678",
+            "9101"
+        ]
+    ):
+        cli.main()
+        out, _ = capfd.readouterr()
+        assert (
+            out == (
+                "Please enter your SMTP password: \n"
+                "Sending book `1234`...\n"
+                "Book `1234` sent!\n"
+                "Book `5678` could not be downloaded!\n"
+                "Skipping book `5678`...\n"
+                "Sending book `9101`...\n"
+                "Book `9101` sent!\n"
+                "2 books sent successfully!\n"
             )
         )
 
