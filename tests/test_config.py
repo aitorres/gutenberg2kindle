@@ -23,26 +23,17 @@ def test_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
     """Unit tests for the function that retrieves a config variable"""
     monkeypatch.setattr(config, "settings", _generate_new_settings_instance())
 
-    with pytest.raises(
-        ValueError,
-        match="`pokemon` is not a valid setting name"
-    ):
+    with pytest.raises(ValueError, match="`pokemon` is not a valid setting name"):
         config.get_config("pokemon")
 
     test_setting_value_1 = random.randint(0, 100)
     test_setting_value_2 = f"test{random.randint(0, 100)}"
-    config.settings.add_setting(
-        config.SETTINGS_SMTP_PORT, int, test_setting_value_1
-    )
-    config.settings.add_setting(
-        config.SETTINGS_SMTP_SERVER, str, test_setting_value_2
-    )
+    config.settings.add_setting(config.SETTINGS_SMTP_PORT, int, test_setting_value_1)
+    config.settings.add_setting(config.SETTINGS_SMTP_SERVER, str, test_setting_value_2)
     config.settings.load_settings()
 
     assert config.get_config(config.SETTINGS_SMTP_PORT) == test_setting_value_1
-    assert (
-        config.get_config(config.SETTINGS_SMTP_SERVER) == test_setting_value_2
-    )
+    assert config.get_config(config.SETTINGS_SMTP_SERVER) == test_setting_value_2
 
     assert config.get_config() == {
         config.SETTINGS_SMTP_PORT: test_setting_value_1,
@@ -57,21 +48,13 @@ def test_set_config(monkeypatch: pytest.MonkeyPatch) -> None:
     """Unit tests for the function that stores a config variable"""
     monkeypatch.setattr(config, "settings", _generate_new_settings_instance())
 
-    with pytest.raises(
-        ValueError,
-        match="`pokemon` is not a valid setting name"
-    ):
+    with pytest.raises(ValueError, match="`pokemon` is not a valid setting name"):
         config.set_config("pokemon", 151)
 
-    with pytest.raises(
-        ValueError,
-        match="`pokemon` is not a valid format"
-    ):
+    with pytest.raises(ValueError, match="`pokemon` is not a valid format"):
         config.set_config(config.SETTINGS_FORMAT, "pokemon")
 
-    config.settings.add_setting(
-        config.SETTINGS_SMTP_SERVER, str, ""
-    )
+    config.settings.add_setting(config.SETTINGS_SMTP_SERVER, str, "")
     config.settings.load_settings()
 
     assert config.get_config(config.SETTINGS_SMTP_SERVER) == ""
@@ -108,10 +91,9 @@ def test_interactive_config(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         "sys.stdin",
         StringIO(
-            "localhost\n8080\nexample@example.org\n"
-            "kindle@example.org\nno_images\n"
-            )
-        )
+            "localhost\n8080\nexample@example.org\nkindle@example.org\nno_images\n"
+        ),
+    )
     config.interactive_config()
     new_settings_2 = config.get_config()
     assert default_settings != new_settings_2

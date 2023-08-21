@@ -5,11 +5,7 @@ from dataclasses import dataclass
 import pytest
 
 from gutenberg2kindle import gutenberg
-from gutenberg2kindle.config import (
-    FORMAT_AUTO,
-    FORMAT_IMAGES,
-    FORMAT_NO_IMAGES,
-)
+from gutenberg2kindle.config import FORMAT_AUTO, FORMAT_IMAGES, FORMAT_NO_IMAGES
 
 
 @dataclass(frozen=True)
@@ -30,11 +26,7 @@ def test_fetch_book_from_url(monkeypatch: pytest.MonkeyPatch) -> None:
 
     # error
     monkeypatch.setattr(
-        "requests.get",
-        lambda *_args, **_kwargs: ResponseMock(
-            b"",
-            status_code=500
-        )
+        "requests.get", lambda *_args, **_kwargs: ResponseMock(b"", status_code=500)
     )
     book_response_1 = gutenberg.fetch_book_from_url(
         "https://www.gutenberg.org/ebooks/1.kindle"
@@ -44,10 +36,7 @@ def test_fetch_book_from_url(monkeypatch: pytest.MonkeyPatch) -> None:
     # success
     monkeypatch.setattr(
         "requests.get",
-        lambda *_args, **_kwargs: ResponseMock(
-            b"book content",
-            status_code=200
-        )
+        lambda *_args, **_kwargs: ResponseMock(b"book content", status_code=200),
     )
     book_response_2 = gutenberg.fetch_book_from_url(
         "https://www.gutenberg.org/ebooks/1.kindle"
@@ -66,13 +55,9 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         "requests.get",
         lambda url, *_args, **_kwargs: ResponseMock(
-            (
-                b"image book content"
-                if ".images" in url
-                else b"book content"
-            ),
-            status_code=200
-        )
+            (b"image book content" if ".images" in url else b"book content"),
+            status_code=200,
+        ),
     )
     book_id = 1234
 
@@ -98,15 +83,9 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         "requests.get",
         lambda url, *_args, **_kwargs: ResponseMock(
-            (
-                b"image book content"
-                if ".images" in url
-                else b"book content"
-            ),
-            status_code=(
-                500 if ".images" in url else 200
-            )
-        )
+            (b"image book content" if ".images" in url else b"book content"),
+            status_code=(500 if ".images" in url else 200),
+        ),
     )
     book_response_3 = gutenberg.download_book(book_id)
     assert book_response_3 is not None
@@ -114,7 +93,5 @@ def test_download_book(monkeypatch: pytest.MonkeyPatch) -> None:
 
     # invalid format
     monkeypatch.setattr(gutenberg, "get_config", lambda _: "INVALID_FORMAT")
-    with pytest.raises(
-        ValueError, match="INVALID_FORMAT is an invalid format"
-    ):
+    with pytest.raises(ValueError, match="INVALID_FORMAT is an invalid format"):
         gutenberg.download_book(book_id)

@@ -6,7 +6,6 @@ from typing import Final, Optional, Union
 
 import usersettings  # type: ignore
 
-
 SETTINGS_SMTP_SERVER: Final[str] = "smtp_server"
 SETTINGS_SMTP_PORT: Final[str] = "smtp_port"
 SETTINGS_SENDER_EMAIL: Final[str] = "sender_email"
@@ -29,7 +28,7 @@ VALID_FORMATS: Final[list[str]] = [
     FORMAT_AUTO,
 ]
 
-settings = usersettings.Settings("gutenberg2kindle")
+settings: usersettings.Settings = usersettings.Settings("gutenberg2kindle")
 
 
 def setup_settings() -> usersettings.Settings:
@@ -55,12 +54,13 @@ def get_config(name: Optional[str] = None) -> Union[dict, int, str]:
     """
 
     if name is None:
-        return settings
+        return settings  # type: ignore
 
     if name not in AVAILABLE_SETTINGS:
         raise ValueError(f"`{name}` is not a valid setting name")
 
-    return settings[name]
+    stored_value: int | str = settings[name]
+    return stored_value
 
 
 def set_config(name: str, value: Union[int, str]) -> None:
@@ -73,8 +73,7 @@ def set_config(name: str, value: Union[int, str]) -> None:
 
     if name == SETTINGS_FORMAT and value not in VALID_FORMATS:
         raise ValueError(
-            f"`{value}` is not a valid format "
-            f"(expected one of: {VALID_FORMATS})"
+            f"`{value}` is not a valid format " f"(expected one of: {VALID_FORMATS})"
         )
 
     settings[name] = value
@@ -102,9 +101,6 @@ def interactive_config() -> None:
 
             print(f"Value for `{setting_name}` set to `{possible_new_value}`")
         else:
-            print(
-                f"Keeping current value of `{current_value}`"
-                f"for `{setting_name}`"
-            )
+            print(f"Keeping current value of `{current_value}` for `{setting_name}`")
 
     print("Config updated successfully!")

@@ -40,11 +40,10 @@ def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="gutenberg2kindle",
         description=(
-            "A CLI tool to download and send ebooks "
-            "from Project Gutenberg to a Kindle email "
-            "address via SMTP"
+            "A CLI tool to download and send ebooks from Project Gutenberg to "
+            " a Kindle email address via SMTP"
         ),
-        epilog="Happy reading! :-)"
+        epilog="Happy reading! :-)",
     )
     parser.add_argument(
         "command",
@@ -63,7 +62,7 @@ def get_parser() -> argparse.ArgumentParser:
         "-b",
         metavar="BOOK_ID",
         type=int,
-        nargs='+',
+        nargs="+",
         default=[],
         help=(
             "ID of the Project Gutenberg book you want to download. "
@@ -77,18 +76,14 @@ def get_parser() -> argparse.ArgumentParser:
         metavar="NAME",
         type=str,
         choices=AVAILABLE_SETTINGS,
-        help=(
-            "Setting to get / set, whenever these commands are used."
-        ),
+        help="Setting to get / set, whenever these commands are used.",
     )
     parser.add_argument(
         "--value",
         "-a",
         metavar="VALUE",
         type=str,
-        help=(
-            "Value to set for the specified setting name, if required."
-        ),
+        help="Value to set for the specified setting name, if required.",
     )
     parser.add_argument(
         "--ignore-errors",
@@ -98,7 +93,7 @@ def get_parser() -> argparse.ArgumentParser:
             "If set, the tool will ignore any errors that occur while "
             "downloading books, useful when attempting to download and send "
             "multiple books at once. Default is false."
-        )
+        ),
     )
     parser.set_defaults(ignore_errors=False)
 
@@ -126,6 +121,46 @@ def print_settings(
         print(setting_or_dict)
 
 
+def handle_book_download(book_ids: list[int], ignore_errors: bool) -> None:
+    """
+    Given a list of book IDs, downloads and sends the books
+    using the current tool config
+    """
+
+    books_amount = len(book_ids)
+
+    # request password
+    password = getpass.getpass("Please enter your SMTP password: ")
+
+    for book_id in book_ids:
+        book = download_book(book_id)
+
+        if book is None:
+            print(f"Book `{book_id}` could not be downloaded!")
+            books_amount -= 1
+
+            if ignore_errors:
+                print(f"Skipping book `{book_id}`...")
+                continue
+            sys.exit(1)
+
+        print(f"Sending book `{book_id}`...")
+        try:
+            send_book(book_id, book, password)
+            book.close()
+        except socket.error as err:  # pylint: disable=no-member
+            print(
+                "SMTP credentials are invalid! "
+                "Please validate your current config.\n"
+                f"Server error message: {err}"
+            )
+            sys.exit(1)
+        print(f"Book `{book_id}` sent!")
+
+    if books_amount > 1:
+        print(f"{books_amount} books sent successfully!")
+
+
 def main() -> None:
     """
     Run the tool's CLI
@@ -146,42 +181,10 @@ def main() -> None:
 
     if command == COMMAND_SEND:
         book_id_list: list[int] = args.book_id
-        books_amount = len(book_id_list)
-
-        # request password
-        password = getpass.getpass("Please enter your SMTP password: ")
-
-        for book_id in book_id_list:
-            book = download_book(book_id)
-
-            if book is None:
-                print(f"Book `{book_id}` could not be downloaded!")
-                books_amount -= 1
-
-                if ignore_errors:
-                    print(f"Skipping book `{book_id}`...")
-                    continue
-                sys.exit(1)
-
-            print(f"Sending book `{book_id}`...")
-            try:
-                send_book(book_id, book, password)
-                book.close()
-            except socket.error as err:  # pylint: disable=no-member
-                print(
-                    "SMTP credentials are invalid! "
-                    "Please validate your current config.\n"
-                    f"Server error message: {err}"
-                )
-                sys.exit(1)
-            print(f"Book `{book_id}` sent!")
-
-        if books_amount > 1:
-            print(f"{books_amount} books sent successfully!")
+        handle_book_download(book_id_list, ignore_errors)
 
     elif command == COMMAND_GET_CONFIG:
-        stored_value = get_config(name)
-        print_settings(stored_value)
+        print_settings(get_config(name))
 
     elif command == COMMAND_SET_CONFIG:
         if name is None:

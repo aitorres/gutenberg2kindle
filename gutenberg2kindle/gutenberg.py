@@ -13,12 +13,10 @@ from gutenberg2kindle.config import (
     get_config,
 )
 
-GUTENBERG_BOOK_WITH_IMAGES_BASE_URL: Final[str] = (
-    "https://www.gutenberg.org/ebooks/{book_id}.epub.images"
-)
-GUTENBERG_BOOK_BASE_URL: Final[str] = (
-    "https://www.gutenberg.org/ebooks/{book_id}.epub"
-)
+GUTENBERG_BOOK_WITH_IMAGES_BASE_URL: Final[
+    str
+] = "https://www.gutenberg.org/ebooks/{book_id}.epub.images"
+GUTENBERG_BOOK_BASE_URL: Final[str] = "https://www.gutenberg.org/ebooks/{book_id}.epub"
 
 REQUESTS_TIMEOUT: Final[int] = 10
 
@@ -37,9 +35,7 @@ def download_book(book_id: int) -> Optional[BytesIO]:
     if fmt == FORMAT_NO_IMAGES:
         return fetch_book_from_url(book_url)
 
-    book_with_images_url = GUTENBERG_BOOK_WITH_IMAGES_BASE_URL.format(
-        book_id=book_id
-    )
+    book_with_images_url = GUTENBERG_BOOK_WITH_IMAGES_BASE_URL.format(book_id=book_id)
     if fmt == FORMAT_IMAGES:
         return fetch_book_from_url(book_with_images_url)
 

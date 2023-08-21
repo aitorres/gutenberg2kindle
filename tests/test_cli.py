@@ -3,8 +3,8 @@
 import socket
 import sys
 from io import BytesIO
-from unittest.mock import patch
 from typing import Optional
+from unittest.mock import patch
 
 import pytest
 
@@ -69,9 +69,7 @@ def test_main_config_handlers(
 
     # get-config without name
     monkeypatch.setattr(cli, "get_config", lambda _: {"a": 1, "b": 2})
-    with patch.object(
-        sys, "argv", ["gutenberg2kindle", "get-config"]
-    ):
+    with patch.object(sys, "argv", ["gutenberg2kindle", "get-config"]):
         cli.main()
         out, _ = capfd.readouterr()
         assert out == "a:\t\t1\nb:\t\t2\n"
@@ -81,14 +79,7 @@ def test_main_config_handlers(
     with patch.object(
         sys,
         "argv",
-        [
-            "gutenberg2kindle",
-            "set-config",
-            "--name",
-            "smtp_server",
-            "--value",
-            "test"
-        ]
+        ["gutenberg2kindle", "set-config", "--name", "smtp_server", "--value", "test"],
     ):
         cli.main()
         out, _ = capfd.readouterr()
@@ -102,14 +93,12 @@ def test_main_config_handlers(
         [
             "gutenberg2kindle",
             "set-config",
-        ]
+        ],
     ):
         with pytest.raises(SystemExit, match="1"):
             cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == "Please specify a setting name with the `--name` flag\n"
-        )
+        assert out == "Please specify a setting name with the `--name` flag\n"
 
     # set-config without value
     monkeypatch.setattr(cli, "set_config", lambda *_: None)
@@ -121,14 +110,12 @@ def test_main_config_handlers(
             "set-config",
             "--name",
             "smtp_server",
-        ]
+        ],
     ):
         with pytest.raises(SystemExit, match="1"):
             cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == "Please specify a setting value with the `--value` flag\n"
-        )
+        assert out == "Please specify a setting value with the `--value` flag\n"
 
 
 def test_main_send_handler_if_book_is_none(
@@ -150,16 +137,14 @@ def test_main_send_handler_if_book_is_none(
             "send",
             "--book-id",
             "1234",
-        ]
+        ],
     ):
         with pytest.raises(SystemExit, match="1"):
             cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Book `1234` could not be downloaded!\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Book `1234` could not be downloaded!\n"
         )
 
 
@@ -184,16 +169,14 @@ def test_main_send_handler_if_book_is_none_with_ignore_errors(
             "--ignore-errors",
             "--book-id",
             "1234",
-        ]
+        ],
     ):
         cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Book `1234` could not be downloaded!\n"
-                "Skipping book `1234`...\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Book `1234` could not be downloaded!\n"
+            "Skipping book `1234`...\n"
         )
 
 
@@ -217,27 +200,16 @@ def test_main_send_handler_if_book_is_none_multiple_books(
     monkeypatch.setattr(cli, "send_book", lambda *_: None)
 
     with patch.object(
-        sys,
-        "argv",
-        [
-            "gutenberg2kindle",
-            "send",
-            "--book-id",
-            "1234",
-            "5678",
-            "9101"
-        ]
+        sys, "argv", ["gutenberg2kindle", "send", "--book-id", "1234", "5678", "9101"]
     ):
         with pytest.raises(SystemExit, match="1"):
             cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Sending book `1234`...\n"
-                "Book `1234` sent!\n"
-                "Book `5678` could not be downloaded!\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Sending book `1234`...\n"
+            "Book `1234` sent!\n"
+            "Book `5678` could not be downloaded!\n"
         )
 
 
@@ -270,22 +242,20 @@ def test_main_send_handler_if_book_is_none_multiple_books_with_ignore_errors(
             "--book-id",
             "1234",
             "5678",
-            "9101"
-        ]
+            "9101",
+        ],
     ):
         cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Sending book `1234`...\n"
-                "Book `1234` sent!\n"
-                "Book `5678` could not be downloaded!\n"
-                "Skipping book `5678`...\n"
-                "Sending book `9101`...\n"
-                "Book `9101` sent!\n"
-                "2 books sent successfully!\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Sending book `1234`...\n"
+            "Book `1234` sent!\n"
+            "Book `5678` could not be downloaded!\n"
+            "Skipping book `5678`...\n"
+            "Sending book `9101`...\n"
+            "Book `9101` sent!\n"
+            "2 books sent successfully!\n"
         )
 
 
@@ -297,15 +267,12 @@ def test_main_send_handler_if_email_cant_be_sent(
     Unit tests for the `send` handler of the CLI when the email can't be sent
     """
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
-    monkeypatch.setattr(
-        cli, "download_book", lambda _: BytesIO(b"book content")
-    )
+    monkeypatch.setattr(cli, "download_book", lambda _: BytesIO(b"book content"))
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
 
-    def _send_book_monkeypatch(
-        book_id: int, book: BytesIO, password: str
-    ) -> None:
+    def _send_book_monkeypatch(book_id: int, book: BytesIO, password: str) -> None:
         raise socket.error("smtp error!")
+
     monkeypatch.setattr(cli, "send_book", _send_book_monkeypatch)
 
     with patch.object(
@@ -316,19 +283,17 @@ def test_main_send_handler_if_email_cant_be_sent(
             "send",
             "--book-id",
             "1234",
-        ]
+        ],
     ):
         with pytest.raises(SystemExit, match="1"):
             cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Sending book `1234`...\n"
-                "SMTP credentials are invalid! "
-                "Please validate your current config.\n"
-                "Server error message: smtp error!\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Sending book `1234`...\n"
+            "SMTP credentials are invalid! "
+            "Please validate your current config.\n"
+            "Server error message: smtp error!\n"
         )
 
 
@@ -341,9 +306,7 @@ def test_main_send_handler_if_email_is_sent(
     successfully
     """
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
-    monkeypatch.setattr(
-        cli, "download_book", lambda _: BytesIO(b"book content")
-    )
+    monkeypatch.setattr(cli, "download_book", lambda _: BytesIO(b"book content"))
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
 
     monkeypatch.setattr(cli, "send_book", lambda *_: None)
@@ -355,16 +318,14 @@ def test_main_send_handler_if_email_is_sent(
             "send",
             "--book-id",
             "1234",
-        ]
+        ],
     ):
         cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Sending book `1234`...\n"
-                "Book `1234` sent!\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Sending book `1234`...\n"
+            "Book `1234` sent!\n"
         )
 
     # multiple books at once
@@ -378,19 +339,17 @@ def test_main_send_handler_if_email_is_sent(
             "1234",
             "5678",
             "9876",
-        ]
+        ],
     ):
         cli.main()
         out, _ = capfd.readouterr()
-        assert (
-            out == (
-                "Please enter your SMTP password: \n"
-                "Sending book `1234`...\n"
-                "Book `1234` sent!\n"
-                "Sending book `5678`...\n"
-                "Book `5678` sent!\n"
-                "Sending book `9876`...\n"
-                "Book `9876` sent!\n"
-                "3 books sent successfully!\n"
-            )
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Sending book `1234`...\n"
+            "Book `1234` sent!\n"
+            "Sending book `5678`...\n"
+            "Book `5678` sent!\n"
+            "Sending book `9876`...\n"
+            "Book `9876` sent!\n"
+            "3 books sent successfully!\n"
         )
