@@ -36,12 +36,27 @@ usersettings = "^1.1.5"
 requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
+pre-commit = "^3.3.3"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
+black = "^23.7.0"
 flake8 = "^6.1.0"
 mypy = "^1.5.1"
 pylint = "^2.17.5"
+isort = "^5.12.0"
 types-requests = "^2.31.0.2"
+
+[tool.isort]
+src_paths = ["gutenberg2kindle", "tests"]
+profile = "black"
+line_length = 90
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pylint.FORMAT]
+max-line-length=90
 
 [tool.poetry.scripts]
 gutenberg2kindle = "gutenberg2kindle.cli:main"
