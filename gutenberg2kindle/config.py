@@ -59,7 +59,7 @@ def get_config(name: Optional[str] = None) -> Union[dict, int, str]:
     if name not in AVAILABLE_SETTINGS:
         raise ValueError(f"`{name}` is not a valid setting name")
 
-    stored_value: int | str = settings[name]
+    stored_value: Union[int, str] = settings[name]
     return stored_value
 
 
