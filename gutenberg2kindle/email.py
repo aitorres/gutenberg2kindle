@@ -21,10 +21,7 @@ EMAIL_SUBJECT: Final[str] = "Your Project Gutenberg ebook!"
 EMAIL_BODY: Final[str] = "- Sent with gutenberg2kindle. Happy reading!"
 
 
-def create_base_email(
-    sender_email: str,
-    kindle_email: str,
-) -> MIMEMultipart:
+def create_base_email(sender_email: str, kindle_email: str) -> MIMEMultipart:
     """Generates and returns the base email to use when sending a book"""
 
     message = MIMEMultipart()
@@ -35,11 +32,7 @@ def create_base_email(
     return message
 
 
-def send_book(
-    book_id: int,
-    book_in_memory: BytesIO,
-    password: str,
-) -> None:
+def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> None:
     """
     Given a book as a file in memory, sends the file via email
     using the stored config
@@ -65,10 +58,7 @@ def send_book(
     part = MIMEBase("application", "octet-stream")
     part.set_payload(book_in_memory.read())
     encoders.encode_base64(part)
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename={book_id}.epub",
-    )
+    part.add_header("Content-Disposition", f"attachment; filename={book_id}.epub")
     message.attach(part)
 
     # send email

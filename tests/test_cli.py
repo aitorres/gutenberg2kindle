@@ -45,8 +45,7 @@ def test_version_handler(capfd: pytest.CaptureFixture) -> None:
 
 
 def test_main_config_handlers(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """Unit tests for the get-config and set-config handlers of the CLI"""
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
@@ -119,8 +118,7 @@ def test_main_config_handlers(
 
 
 def test_main_send_handler_if_book_is_none(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """
     Unit tests for the `send` handler of the CLI when a book can't be found
@@ -149,8 +147,7 @@ def test_main_send_handler_if_book_is_none(
 
 
 def test_main_send_handler_if_book_is_none_with_ignore_errors(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """
     Unit tests for the `send` handler of the CLI when a book can't be found
@@ -181,8 +178,7 @@ def test_main_send_handler_if_book_is_none_with_ignore_errors(
 
 
 def test_main_send_handler_if_book_is_none_multiple_books(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """
     Unit tests for the `send` handler of the CLI when a book can't be found
@@ -214,8 +210,7 @@ def test_main_send_handler_if_book_is_none_multiple_books(
 
 
 def test_main_send_handler_if_book_is_none_multiple_books_with_ignore_errors(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """
     Unit tests for the `send` handler of the CLI when a book can't be found
@@ -260,8 +255,7 @@ def test_main_send_handler_if_book_is_none_multiple_books_with_ignore_errors(
 
 
 def test_main_send_handler_if_email_cant_be_sent(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """
     Unit tests for the `send` handler of the CLI when the email can't be sent
@@ -298,8 +292,7 @@ def test_main_send_handler_if_email_cant_be_sent(
 
 
 def test_main_send_handler_if_email_is_sent(
-    monkeypatch: pytest.MonkeyPatch,
-    capfd: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
 ) -> None:
     """
     Unit tests for the `send` handler of the CLI when the email is sent
