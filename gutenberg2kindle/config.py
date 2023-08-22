@@ -4,7 +4,7 @@ Auxiliary functions to handle user configuration for `gutenberg2kindle`
 
 from typing import Final, Optional, Union
 
-import usersettings  # type: ignore
+import usersettings
 
 SETTINGS_SMTP_SERVER: Final[str] = "smtp_server"
 SETTINGS_SMTP_PORT: Final[str] = "smtp_port"
@@ -31,7 +31,7 @@ VALID_FORMATS: Final[list[str]] = [
 settings: usersettings.Settings = usersettings.Settings("gutenberg2kindle")
 
 
-def setup_settings() -> usersettings.Settings:
+def setup_settings() -> None:
     """
     Sets up and returns an instance of the `usersettings.Settings` model
     with values for all the required settings used in the project
@@ -45,7 +45,7 @@ def setup_settings() -> usersettings.Settings:
     settings.load_settings()
 
 
-def get_config(name: Optional[str] = None) -> Union[dict, int, str]:
+def get_config(name: Optional[str] = None) -> Union[usersettings.Settings, int, str]:
     """
     Given a setting name, returns the value for said setting.
 
@@ -54,7 +54,7 @@ def get_config(name: Optional[str] = None) -> Union[dict, int, str]:
     """
 
     if name is None:
-        return settings  # type: ignore
+        return settings
 
     if name not in AVAILABLE_SETTINGS:
         raise ValueError(f"`{name}` is not a valid setting name")

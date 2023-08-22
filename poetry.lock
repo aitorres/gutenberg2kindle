@@ -819,6 +819,17 @@ files = [
 ]
 
 [[package]]
+name = "types-usersettings"
+version = "1.1.0.0"
+description = "Typing stubs for usersettings"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-usersettings-1.1.0.0.tar.gz", hash = "sha256:6f356fbc82311af7a4c8a852c82eb4a1eccb065b5a74f1df82510dd028cdd9eb"},
+    {file = "types_usersettings-1.1.0.0-py3-none-any.whl", hash = "sha256:399d63a0a21ca65f802f01a7b25cf861e8ad441815e145c8207acaf56d72ec88"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -967,4 +978,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "aa901bad2b18f2e58e2a152159c9f8ab4ffcf5bd9ca6bd700c8de7efe5fd53e8"
+content-hash = "ff20e41bd768872d7319293c7ff4dae9883c44783971765795cf7e0045fc5f8f"
