@@ -41,6 +41,7 @@ def test_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
         config.SETTINGS_SENDER_EMAIL: "",
         config.SETTINGS_KINDLE_EMAIL: "",
         config.SETTINGS_FORMAT: config.FORMAT_AUTO,
+        config.SETTINGS_SIZE_LIMIT_IN_MB: config.DEFAULT_MAX_SIZE_IN_MB,
     }
 
 
@@ -103,4 +104,5 @@ def test_interactive_config(monkeypatch: pytest.MonkeyPatch) -> None:
         "sender_email": "example@example.org",
         "kindle_email": "kindle@example.org",
         "format": "no_images",
+        "size_limit_in_mb": 15,
     }
