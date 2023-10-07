@@ -11,6 +11,7 @@ SETTINGS_SMTP_PORT: Final[str] = "smtp_port"
 SETTINGS_SENDER_EMAIL: Final[str] = "sender_email"
 SETTINGS_KINDLE_EMAIL: Final[str] = "kindle_email"
 SETTINGS_FORMAT: Final[str] = "format"
+SETTINGS_SIZE_LIMIT_IN_MB: Final[str] = "size_limit_in_mb"
 AVAILABLE_SETTINGS: Final[list[str]] = [
     SETTINGS_SMTP_SERVER,
     SETTINGS_SMTP_PORT,
@@ -28,6 +29,8 @@ VALID_FORMATS: Final[list[str]] = [
     FORMAT_AUTO,
 ]
 
+DEFAULT_MAX_SIZE_IN_MB: Final[int] = 15
+
 settings: usersettings.Settings = usersettings.Settings("gutenberg2kindle")
 
 
@@ -42,6 +45,7 @@ def setup_settings() -> None:
     settings.add_setting(SETTINGS_SENDER_EMAIL, str, "")
     settings.add_setting(SETTINGS_KINDLE_EMAIL, str, "")
     settings.add_setting(SETTINGS_FORMAT, str, FORMAT_AUTO)
+    settings.add_setting(SETTINGS_SIZE_LIMIT_IN_MB, int, DEFAULT_MAX_SIZE_IN_MB)
     settings.load_settings()
 
 
