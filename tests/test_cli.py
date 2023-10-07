@@ -193,7 +193,7 @@ def test_main_send_handler_if_book_is_none_multiple_books(
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
     monkeypatch.setattr(cli, "download_book", _download_book)
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
-    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != "5678")
+    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != 5678)
 
     with patch.object(
         sys, "argv", ["gutenberg2kindle", "send", "--book-id", "1234", "5678", "9101"]
@@ -225,7 +225,7 @@ def test_main_send_handler_if_book_is_none_multiple_books_with_ignore_errors(
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
     monkeypatch.setattr(cli, "download_book", _download_book)
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
-    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != "5678")
+    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != 5678)
 
     with patch.object(
         sys,
