@@ -7,6 +7,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from io import BytesIO
+from math import ceil
 from typing import Final
 
 from gutenberg2kindle.config import (
@@ -68,3 +69,12 @@ def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> None:
         server.starttls(context=context)
         server.login(sender_email, password)
         server.sendmail(sender_email, kindle_email, text)
+
+
+def bytes_to_mb(bytes_: int) -> float:
+    """
+    Converts bytes to megabytes, rounding up
+    to the nearest integer
+    """
+
+    return ceil(bytes_ / 1024 / 1024)
