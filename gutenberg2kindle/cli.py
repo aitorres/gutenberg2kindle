@@ -146,8 +146,7 @@ def handle_book_download(book_ids: list[int], ignore_errors: bool) -> None:
 
         print(f"Sending book `{book_id}`...")
         try:
-            send_book(book_id, book, password)
-            book.close()
+            sent: bool = send_book(book_id, book, password)
         except socket.error as err:  # pylint: disable=no-member
             print(
                 "SMTP credentials are invalid! "
@@ -155,7 +154,14 @@ def handle_book_download(book_ids: list[int], ignore_errors: bool) -> None:
                 f"Server error message: {err}"
             )
             sys.exit(1)
-        print(f"Book `{book_id}` sent!")
+        else:
+            book.close()
+
+        if sent:
+            print(f"Book `{book_id}` sent!")
+        else:
+            print(f"Book `{book_id}` could not be sent, please check its file size.")
+            books_amount -= 1
 
     if books_amount > 1:
         print(f"{books_amount} books sent successfully!")

@@ -193,7 +193,7 @@ def test_main_send_handler_if_book_is_none_multiple_books(
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
     monkeypatch.setattr(cli, "download_book", _download_book)
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
-    monkeypatch.setattr(cli, "send_book", lambda *_: None)
+    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != "5678")
 
     with patch.object(
         sys, "argv", ["gutenberg2kindle", "send", "--book-id", "1234", "5678", "9101"]
@@ -225,7 +225,7 @@ def test_main_send_handler_if_book_is_none_multiple_books_with_ignore_errors(
     monkeypatch.setattr(cli, "setup_settings", lambda: None)
     monkeypatch.setattr(cli, "download_book", _download_book)
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
-    monkeypatch.setattr(cli, "send_book", lambda *_: None)
+    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != "5678")
 
     with patch.object(
         sys,
@@ -302,7 +302,7 @@ def test_main_send_handler_if_email_is_sent(
     monkeypatch.setattr(cli, "download_book", lambda _: BytesIO(b"book content"))
     monkeypatch.setattr("getpass.getpass", _getpass_mock)
 
-    monkeypatch.setattr(cli, "send_book", lambda *_: None)
+    monkeypatch.setattr(cli, "send_book", lambda *_: True)
     with patch.object(
         sys,
         "argv",
@@ -345,4 +345,47 @@ def test_main_send_handler_if_email_is_sent(
             "Sending book `9876`...\n"
             "Book `9876` sent!\n"
             "3 books sent successfully!\n"
+        )
+
+
+def test_main_send_handler_max_file_size_limit(
+    monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture
+) -> None:
+    """
+    Unit tests for the `send` handler of the CLI when one book exceeds
+    the file size limit.
+
+    Note that this only tests that the right message appears, as it doesn't actually
+    reach the `send_book` function.
+    """
+    monkeypatch.setattr(cli, "setup_settings", lambda: None)
+    monkeypatch.setattr(cli, "download_book", lambda _: BytesIO(b"book content"))
+    monkeypatch.setattr("getpass.getpass", _getpass_mock)
+
+    monkeypatch.setattr(cli, "send_book", lambda book_id, *_: book_id != 5678)
+
+    # multiple books at once
+    with patch.object(
+        sys,
+        "argv",
+        [
+            "gutenberg2kindle",
+            "send",
+            "--book-id",
+            "1234",
+            "5678",
+            "9876",
+        ],
+    ):
+        cli.main()
+        out, _ = capfd.readouterr()
+        assert out == (
+            "Please enter your SMTP password: \n"
+            "Sending book `1234`...\n"
+            "Book `1234` sent!\n"
+            "Sending book `5678`...\n"
+            "Book `5678` could not be sent, please check its file size.\n"
+            "Sending book `9876`...\n"
+            "Book `9876` sent!\n"
+            "2 books sent successfully!\n"
         )

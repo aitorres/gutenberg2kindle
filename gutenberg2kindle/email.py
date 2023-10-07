@@ -34,10 +34,10 @@ def create_base_email(sender_email: str, kindle_email: str) -> MIMEMultipart:
     return message
 
 
-def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> None:
+def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> bool:
     """
     Given a book as a file in memory, sends the file via email
-    using the stored config
+    using the stored config if the file is less than the set limit
     """
 
     # retrieving config
@@ -52,6 +52,9 @@ def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> None:
 
     port = get_config(SETTINGS_SMTP_PORT)
     assert isinstance(port, int)
+
+    if not is_valid_file_size(book_in_memory):
+        return False
 
     # creating email message
     message = create_base_email(sender_email, kindle_email)
@@ -70,6 +73,8 @@ def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> None:
         server.starttls(context=context)
         server.login(sender_email, password)
         server.sendmail(sender_email, kindle_email, text)
+
+    return True
 
 
 def is_valid_file_size(book_in_memory: BytesIO) -> bool:
