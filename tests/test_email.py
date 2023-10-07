@@ -1,5 +1,9 @@
 """Unit tests for the email helper module"""
 
+from io import BytesIO
+
+import pytest
+
 from gutenberg2kindle import email
 
 
@@ -31,3 +35,16 @@ def test_bytes_to_mb() -> None:
     assert email.bytes_to_mb(10485760) == 10
     assert email.bytes_to_mb(10485761) == 11
     assert email.bytes_to_mb(104857600) == 100
+
+
+def test_is_valid_file_size(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Unit test to check if the function that checks the file size works properly"""
+
+    # setting up config
+    monkeypatch.setattr(email, "get_config", lambda _: 10)
+
+    # testing with a file that is too big
+    assert not email.is_valid_file_size(BytesIO(b"0" * 10485761))
+
+    # testing with a file that is small enough
+    assert email.is_valid_file_size(BytesIO(b"0" * 1048576))

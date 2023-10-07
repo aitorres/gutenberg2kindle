@@ -13,6 +13,7 @@ from typing import Final
 from gutenberg2kindle.config import (
     SETTINGS_KINDLE_EMAIL,
     SETTINGS_SENDER_EMAIL,
+    SETTINGS_SIZE_LIMIT_IN_MB,
     SETTINGS_SMTP_PORT,
     SETTINGS_SMTP_SERVER,
     get_config,
@@ -69,6 +70,20 @@ def send_book(book_id: int, book_in_memory: BytesIO, password: str) -> None:
         server.starttls(context=context)
         server.login(sender_email, password)
         server.sendmail(sender_email, kindle_email, text)
+
+
+def is_valid_file_size(book_in_memory: BytesIO) -> bool:
+    """
+    Given a book as a file in memory, returns whether the file is
+    less than the set limit
+    """
+
+    # retrieving config
+    size_limit = get_config(SETTINGS_SIZE_LIMIT_IN_MB)
+    assert isinstance(size_limit, int)
+
+    file_size = bytes_to_mb(len(book_in_memory.getvalue()))
+    return file_size <= size_limit
 
 
 def bytes_to_mb(bytes_: int) -> float:
