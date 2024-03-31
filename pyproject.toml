@@ -36,9 +36,9 @@ usersettings = "^1.1.5"
 requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
-pre-commit = "^3.6.2"
+pre-commit = "^3.7.0"
 pytest = "^8.1.1"
-pytest-cov = "^4.1.0"
+pytest-cov = "^5.0.0"
 black = "^24.3.0"
 flake8 = "^7.0.0"
 mypy = "^1.9.0"
