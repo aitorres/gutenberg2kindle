@@ -37,14 +37,14 @@ requests = "^2.32.3"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.8.0"
-pytest = "^8.3.2"
+pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
 black = "^24.8.0"
 flake8 = "^7.1.1"
 mypy = "^1.11.2"
-pylint = "^3.2.7"
+pylint = "^3.3.1"
 isort = "^5.13.2"
-types-requests = "^2.32.0.20240712"
+types-requests = "^2.32.0.20240914"
 types-usersettings = "^1.1.0.0"
 
 [tool.isort]
