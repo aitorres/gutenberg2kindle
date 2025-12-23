@@ -31,20 +31,20 @@ classifiers = [
 "Change Log" = "https://github.com/aitorres/gutenberg2kindle/blob/main/CHANGELOG.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 usersettings = "^1.1.5"
-requests = "^2.32.3"
+requests = "^2.32.5"
 
 [tool.poetry.dev-dependencies]
-pre-commit = "^4.1.0"
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-black = "^25.1.0"
-flake8 = "^7.1.2"
-mypy = "^1.15.0"
-pylint = "^3.3.5"
-isort = "^6.0.1"
-types-requests = "^2.32.0.20250306"
+pre-commit = "^4.5.1"
+pytest = "^9.0.2"
+pytest-cov = "^7.0.0"
+black = "^25.12.0"
+flake8 = "^7.3.0"
+mypy = "^1.19.1"
+pylint = "^4.0.4"
+isort = "^7.0.0"
+types-requests = "^2.32.4.20250913"
 types-usersettings = "^1.1.0.0"
 
 [tool.isort]
