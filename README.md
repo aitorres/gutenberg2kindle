@@ -65,7 +65,7 @@ Note that, if using Gmail as your SMTP server, you might need to set up an [App 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Contributions for issues that are already open by maintainers are welcome and encouraged.
 
-Please make sure to update tests as appropriate; a minimum coverage of 75% is expected (and enforced by Github Actions!).
+Please make sure to update tests as appropriate; a minimum coverage of 85% is expected (and enforced by Github Actions!).
 
 ## License
 

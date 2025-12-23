@@ -36,4 +36,4 @@ jobs:
       - name: Run tests with pytest
         run: |
           source .venv/bin/activate
-          pytest --cov=gutenberg2kindle --cov-fail-under=80 -vvv
+          pytest --cov=gutenberg2kindle --cov-fail-under=85 -vvv
